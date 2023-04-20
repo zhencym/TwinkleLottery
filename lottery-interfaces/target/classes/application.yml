@@ -1,0 +1,26 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://114.132.214.127:3306/lottery?useUnicode=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+  config-location:  classpath:/mybatis/config/mybatis-config.xml
+
+# Dubbo 广播方式配置
+dubbo:
+  application:
+    name: TwinkleLottery
+    version: 1.0.0
+  registry:
+    address: multicast://224.5.6.7:1234 #这个本质上也是一个注册中心地址
+  protocol:
+    name: dubbo
+    port: 20880
+  scan:
+    base-packages: cn.twinkle.lottery.rpc
