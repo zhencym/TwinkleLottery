@@ -15,6 +15,8 @@ import java.util.List;
  * @DATE: 2023/4/20
  * 必中奖策略抽奖，排掉已经中奖的概率，重新计算中奖范围
  * 这里使用轮询的方式（轮询随机数是否在奖品的中奖范围），查看是否中奖
+ * 算法步骤：
+ * 1.
  */
 @Component("defaultRateRandomDrawAlgorithm")
 public class DefaultRateRandomDrawAlgorithm extends BaseAlgorithm {
@@ -26,8 +28,9 @@ public class DefaultRateRandomDrawAlgorithm extends BaseAlgorithm {
         BigDecimal differenceDenominator = BigDecimal.ZERO;
 
         // 排除掉不在抽奖范围的奖品ID集合
-        List<AwardRateInfo> differenceAwardRateList = new ArrayList<>(); //可抽奖品列表
-        List<AwardRateInfo> awardRateIntervalValList = awardRateInfoMap.get(strategyId); //所有奖品列表
+        // 可抽奖品列表 和 所有奖品列表
+        List<AwardRateInfo> differenceAwardRateList = new ArrayList<>();
+        List<AwardRateInfo> awardRateIntervalValList = awardRateInfoMap.get(strategyId);
         for (AwardRateInfo awardRateInfo : awardRateIntervalValList) {
             String awardId = awardRateInfo.getAwardId();
             // 排除掉不可再抽取的。（列表方式排除，有点小慢）
@@ -40,8 +43,14 @@ public class DefaultRateRandomDrawAlgorithm extends BaseAlgorithm {
         }
 
         // 前置判断
-        if (differenceAwardRateList.size() == 0) return ""; //没有可抽的奖品了
-        if (differenceAwardRateList.size() == 1) return differenceAwardRateList.get(0).getAwardId();//只有一个奖品，直接中奖返回
+        if (differenceAwardRateList.size() == 0) {
+            return "";
+            //没有可抽的奖品了
+        }
+        if (differenceAwardRateList.size() == 1) {
+            return differenceAwardRateList.get(0).getAwardId();
+            //只有一个奖品，直接中奖返回
+        }
 
         // 获取随机概率值
         SecureRandom secureRandom = new SecureRandom();
@@ -49,7 +58,8 @@ public class DefaultRateRandomDrawAlgorithm extends BaseAlgorithm {
 
         // 循环获取奖品
         String awardId = "";
-        int cursorVal = 0; //当前奖品基准值
+        // 当前奖品基准值
+        int cursorVal = 0;
         for (AwardRateInfo awardRateInfo : differenceAwardRateList) {
             // 先用大数除法，计算该奖品新的概率，再乘100，转化为整数
             int rateVal = awardRateInfo.getAwardRate().divide(differenceDenominator, 2, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).intValue();
