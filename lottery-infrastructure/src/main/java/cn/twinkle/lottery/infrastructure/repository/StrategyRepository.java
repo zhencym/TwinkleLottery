@@ -41,4 +41,20 @@ public class StrategyRepository implements IStrategyRepository {
         return awardDao.queryAwardInfo(awardId);
     }
 
+    @Override
+    public List<String> queryNoStockStrategyAwardList(Long strategyId) {
+        return strategyDetailDao.queryNoStockStrategyAwardList(strategyId);
+    }
+
+    @Override
+    public boolean deductStock(Long strategyId, String awardId) {
+        StrategyDetail req = new StrategyDetail();
+        req.setStrategyId(strategyId);
+        req.setAwardId(awardId);
+        // 配置查询参数后调用扣减
+        int count = strategyDetailDao.deductStock(req);
+        //扣减是否成功
+        return count == 1;
+    }
+
 }
