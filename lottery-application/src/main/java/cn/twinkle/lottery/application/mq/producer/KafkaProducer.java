@@ -1,6 +1,7 @@
-package cn.itedus.lottery.application.mq;
+package cn.twinkle.lottery.application.mq;
 
 import com.alibaba.fastjson.JSON;
+import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -9,14 +10,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import javax.annotation.Resource;
-
 /**
- * @description: 消息生产者
- * @author: 小傅哥，微信：fustack
- * @date: 2021/10/23
- * @github: https://github.com/fuzhengwei
- * @Copyright: 公众号：bugstack虫洞栈 | 博客：https://bugstack.cn - 沉淀、分享、成长，让自己和他人都能有所收获！
+ * @Author: zhencym
+ * @DATE: 2023/4/30
+ * 消息生产者
  */
 @Component
 public class KafkaProducer {
@@ -26,8 +23,14 @@ public class KafkaProducer {
     @Resource
     private KafkaTemplate<String, Object> kafkaTemplate;
 
+    /**
+     * 主题配置
+     */
     public static final String TOPIC_TEST = "Hello-Kafka";
 
+    /**
+     * 集群
+     */
     public static final String TOPIC_GROUP = "test-consumer-group";
 
     public void send(Object obj) {
